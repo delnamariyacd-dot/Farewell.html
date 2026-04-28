@@ -9,10 +9,10 @@
     
     <style>
         :root { --primary-pink: #ff85a1; --deep-floral: #4a0e2e; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Poppins', sans-serif; background: #fffafa; }
+        body, html { margin: 0; padding: 0; min-height: 100%; font-family: 'Poppins', sans-serif; background: #fffafa; overflow-x: hidden; }
 
         /* Falling effects only for Page 1 */
-        .falling { position: absolute; top: -10%; pointer-events: none; z-index: 100; animation: fall linear infinite; }
+        .falling { position: fixed; top: -10%; pointer-events: none; z-index: 100; animation: fall linear infinite; }
         @keyframes fall { 
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
@@ -21,31 +21,31 @@
         /* Section 1: Unlock Page */
         #unlock-page {
             height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; background: linear-gradient(to bottom, #ffeef2, #fff);
+            text-align: center; background: linear-gradient(to bottom, #ffeef2, #fff); padding: 20px;
         }
 
-        .input-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 85%; max-width: 350px; }
-        input { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid var(--primary-pink); border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        button { background: var(--primary-pink); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 600; }
+        .input-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 320px; z-index: 10; }
+        input { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid var(--primary-pink); border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; }
+        button { background: var(--primary-pink); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 1rem; }
 
         /* Modal */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 80%; max-width: 300px; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 100%; max-width: 300px; }
 
         /* Section 2: Main Invitation */
         #main-invite {
             display: none; min-height: 100vh; width: 100vw;
-            background: #fff; text-align: center; padding: 20px 0;
+            background: #fff; text-align: center; padding: 40px 0;
         }
 
-        .college-name { font-size: 0.9rem; color: #888; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
-        .personal-msg { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--primary-pink); margin: 10px 20px; }
+        .college-name { font-size: 0.85rem; color: #777; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 5px; padding: 0 10px; }
+        .personal-msg { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--primary-pink); margin: 10px 20px; line-height: 1.2; }
         
-        .poster-container { width: 90%; max-width: 450px; margin: 20px auto; }
-        #poster-img { width: 100%; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); display: block; }
+        .poster-container { width: 90%; max-width: 450px; margin: 25px auto; }
+        #poster-img { width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: block; }
 
-        .details { font-size: 1rem; color: #444; margin: 15px 0; line-height: 1.6; }
-        .exit-btn { background: var(--deep-floral); margin-top: 20px; width: 150px; }
+        .details { font-size: 1.1rem; color: #444; margin: 20px 0; line-height: 1.8; }
+        .exit-btn { background: var(--deep-floral); margin-top: 30px; width: 180px; }
     </style>
 </head>
 <body>
@@ -53,19 +53,19 @@
     <div id="unlock-page">
         <div id="falling-container"></div>
         <div class="input-box">
-            <h2 style="color: var(--deep-floral);">Welcome!</h2>
-            <p>Enter your name to unlock your invitation</p>
-            <input type="text" id="userName" placeholder="Type your name...">
-            <button onclick="checkName()">Unlock</button>
+            <h2 style="color: var(--deep-floral); margin-top: 0;">Welcome!</h2>
+            <p style="font-size: 0.9rem; color: #666;">Enter your name to unlock your invitation</p>
+            <input type="text" id="userName" placeholder="Your Name...">
+            <button onclick="checkName()">Unlock Invitation</button>
         </div>
     </div>
 
     <div id="readyModal" class="modal">
         <div class="modal-content">
-            <h3 id="modalQuestion">Are you ready for your farewell?</h3>
-            <div style="display:flex; justify-content: space-around; margin-top: 20px;">
+            <h3 id="modalQuestion" style="margin-top:0;">Are you ready for your farewell?</h3>
+            <div style="display:flex; justify-content: space-around; margin-top: 25px; gap: 10px;">
                 <button onclick="goToInvite()">Yes!</button>
-                <button style="background: #ccc;" onclick="handleNo()">No</button>
+                <button style="background: #e0e0e0; color: #555;" onclick="handleNo()">No</button>
             </div>
         </div>
     </div>
@@ -79,7 +79,8 @@
         </div>
 
         <div class="details">
-            <strong>📅 May 5, 2026</strong> | <strong>🕙 10:00 AM</strong><br>
+            <strong>📅 May 5, 2026</strong><br>
+            <strong>🕙 10:00 AM</strong><br>
             📍 Saint Chavara Seminar Hall
         </div>
 
@@ -87,7 +88,7 @@
     </div>
 
     <script>
-        // Falling effects only for Page 1
+        // Page 1 Animation
         function createFlower() {
             const container = document.getElementById('falling-container');
             if(!container) return;
@@ -95,12 +96,12 @@
             el.className = 'falling';
             el.innerHTML = Math.random() > 0.5 ? '🌸' : '❤️';
             el.style.left = Math.random() * 100 + 'vw';
-            el.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            el.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            el.style.animationDuration = (Math.random() * 3 + 3) + 's';
             container.appendChild(el);
-            setTimeout(() => el.remove(), 5000);
+            setTimeout(() => el.remove(), 6000);
         }
-        let flowerInterval = setInterval(createFlower, 300);
+        let flowerInterval = setInterval(createFlower, 400);
 
         let noCount = 0;
         function checkName() {
@@ -108,7 +109,7 @@
             if(name.trim() !== "") {
                 document.getElementById('readyModal').style.display = 'flex';
             } else {
-                alert("Please enter your name!");
+                alert("Please type your name first! ✨");
             }
         }
 
@@ -122,25 +123,17 @@
 
         function goToInvite() {
             const name = document.getElementById('userName').value;
-            // Stop flowers for page 2
             clearInterval(flowerInterval);
-            document.getElementById('falling-container').innerHTML = "";
-
+            
             document.getElementById('readyModal').style.display = 'none';
             document.getElementById('unlock-page').style.display = 'none';
             document.getElementById('main-invite').style.display = 'block';
             
-            // Personalize the greeting
             document.getElementById('welcomeUser').innerText = name + ", You are invited!";
 
-            // Confetti Blast
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        }
-
-        function exitPage() {
-            alert("We'll see you there!");
-            window.location.href = "https://www.google.com";
-        }
-    </script>
-</body>
-</html>
+            // High-end Confetti Blast
+            const end = Date.now() + 2 * 1000;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now()
